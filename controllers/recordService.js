@@ -8,7 +8,7 @@ export const saveRecord = async (ctx, next) => {
   ctx.set('Cache-Control', 'no-cache');
   let request = ctx.request.body;
   let { record, nickName, openId, avatarUrl, type } = request;
-  let res = await Record.find({ openId:'a' });
+  let res = await Record.find({ openId });
   let postData = { ...request, [`record_type${type}`]: record };
   let result;
   // 判断是否有记录

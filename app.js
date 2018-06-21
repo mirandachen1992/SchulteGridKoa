@@ -8,7 +8,10 @@ import serverConfig from './utils/server.js';
 import { errorWrapper, successWrapper } from './utils/utils.js';
 
 
-mongoose.connect(serverConfig.DB_CONN_STR);
+mongoose.connect(serverConfig.DB_CONN_STR,{server: {
+        auto_reconnect: true,
+        poolSize: 10
+    }});
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));

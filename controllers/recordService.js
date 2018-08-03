@@ -65,7 +65,7 @@ export const getList = async (ctx, next) => {
       (docs) => {
         docs.map(data => {
           let { openId, nickName, avatarUrl } = data;
-          res.push({ openId, nickName, avatarUrl, record: data[`record_type${type}`], aaa: 'heh' })
+          res.push({ openId, nickName, avatarUrl, record: data[`record_type${type}`] })
         })
       }
     )

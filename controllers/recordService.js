@@ -59,7 +59,7 @@ export const getList = async (ctx, next) => {
   await Record.find({
       [`record_type${type}`]: { $gt: 0 }
     }).sort({
-      [`record_type${type}`]: -1
+      [`record_type${type}`]: 1
     }).lean()
     .then(
       (docs) => {

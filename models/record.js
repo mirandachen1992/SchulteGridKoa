@@ -21,10 +21,15 @@ var RecordSchema = new Schema({
   record_type5: { type: Number, default: 0 },
 })
 
-var Record = mongoose.model('Record', RecordSchema);
+
+RecordSchema.virtual('id').get(function () {
+  return this._id.toHexString();
+});
+
 RecordSchema.pre('save', function(next) {
   next();
 })
 
+var Record = mongoose.model('Record', RecordSchema);
 
 export default Record;

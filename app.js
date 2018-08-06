@@ -27,9 +27,9 @@ const errorHandler = async (ctx, next) => {
   }
 };
 
+app.use(require('koa-static')(__dirname + '/public'))
 app.use(errorHandler); 
 app.use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods());
-
 app.listen(8080);

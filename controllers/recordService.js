@@ -1,7 +1,11 @@
 import { errorWrapper, successWrapper } from '../utils/utils.js';
 import Record from '../models/record';
+import Token from '../models/token';
 import config from '../appConfig.json';
+import path from 'path';
 const request = require('request-promise');
+const fs = require('fs');
+
 
 
 export const saveRecord = async (ctx, next) => {
@@ -49,6 +53,43 @@ export const login = async (ctx, next) => {
   };
   let result = await request(options);
   ctx.response.body = successWrapper(result);
+}
+
+export const getMiniProgramQrcode = async (ctx, next) => {
+  let { AppId, AppSecret } = config;
+  let access_token = '';
+  var options = {
+    method: 'GET',
+    uri: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${AppId}&secret=${AppSecret}`,
+    json: true
+  };
+  let date = new Date();
+  let result = await request(options);
+  let tokens = await Token.find();
+  let currentToken = tokens[0];
+  // if(currentToken && (date.getTime()-currentToken.save_time)/1000 < currentToken.expires_in) {
+  //   access_token = currentToken.access_token;
+  // } else {
+      if(currentToken) {
+        await Token.remove({})
+      }
+    let token = new Token({...result, save_time: date.getTime()});
+    await token.save();
+    access_token = result.access_token;
+    let options1 = {
+      method: 'POST',
+      uri: `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=${result.access_token}`,
+      json: true,
+      body: {
+        scene: 'aa',
+        page: 'pages/index/index'
+      }
+    }
+    let result1 = await request(options1).pipe(fs.createWriteStream('./public/MiniProgramQrcode.png')
+  );
+  let fileUrl = 'http://' + ctx.headers.host + '/MiniProgramQrcode.png';
+    
+  ctx.response.body = successWrapper(fileUrl);
 }
 
 export const getList = async (ctx, next) => {

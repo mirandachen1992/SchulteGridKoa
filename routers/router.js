@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 
-import { saveRecord, login, getRecord, getList } from '../controllers/recordService';
+import { saveRecord, login, getRecord, getList, getMiniProgramQrcode } from '../controllers/recordService';
 import validate from 'koa2-validation';
 import Joi from 'joi';
 var router = new Router();
@@ -28,6 +28,8 @@ router.post('/onLogin', validate(loginV), login);
 router.get('/user/:openId/type/:type/getRecord', getRecord);
 
 router.get('/type/:type/getList', getList);
+
+router.get('/getMiniProgramQrcode', getMiniProgramQrcode);
 
 
 

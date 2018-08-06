@@ -87,7 +87,7 @@ export const getMiniProgramQrcode = async (ctx, next) => {
     }
     let result1 = await request(options1).pipe(fs.createWriteStream('./public/MiniProgramQrcode.png')
   );
-  let fileUrl = 'http://' + ctx.headers.host + '/MiniProgramQrcode.png';
+  let fileUrl = '//' + ctx.headers.host.split(":")[0] + ':8080/' + 'MiniProgramQrcode.png';
     
   ctx.response.body = successWrapper(fileUrl);
 }

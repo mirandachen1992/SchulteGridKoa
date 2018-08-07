@@ -58,22 +58,26 @@ export const login = async (ctx, next) => {
 export const getMiniProgramQrcode = async (ctx, next) => {
   let { AppId, AppSecret } = config;
   let access_token = '';
-  // 获取access_token
-  var options = {
-    method: 'GET',
-    uri: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${AppId}&secret=${AppSecret}`,
-    json: true
-  };
   let date = new Date();
-  let result = await request(options);
+  // 查找是否生成过token
   let tokens = await Token.find({});
   let currentToken = tokens[0];
+  // 验证access_token是否失效
   if(currentToken && (date.getTime()-currentToken.save_time)/1000 < currentToken.expires_in) {
     access_token = currentToken.access_token;
   } else {
+    // 失效先清空token
     if(currentToken) {
       await Token.remove({})
     }
+    
+    // 重新获取access_token
+    var options = {
+      method: 'GET',
+      uri: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${AppId}&secret=${AppSecret}`,
+      json: true
+    };
+    let result = await request(options);
     let token = new Token({...result, save_time: date.getTime()});
     await token.save();
     access_token = result.access_token;
@@ -86,9 +90,10 @@ export const getMiniProgramQrcode = async (ctx, next) => {
         page: 'pages/home/index'
       }
     }
+    // 获取二维码并保存
     let result1 = await request(options1).pipe(fs.createWriteStream('/usr/etc/miniprogramqrcode.png'));
-
   }
+  
   let fileUrl = 'https://' + ctx.headers.host + '/miniprogramqrcode.png';    
   ctx.response.body = successWrapper(fileUrl);
 }

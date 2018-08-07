@@ -56,7 +56,6 @@ export const login = async (ctx, next) => {
 }
 
 export const getMiniProgramQrcode = async (ctx, next) => {
-  console.log('我进来了')
   let { AppId, AppSecret } = config;
   let access_token = '';
   // 获取access_token
@@ -90,7 +89,7 @@ export const getMiniProgramQrcode = async (ctx, next) => {
     let result1 = await request(options1).pipe(fs.createWriteStream('/usr/etc/miniprogramqrcode.png'));
 
   }
-  let fileUrl = '//' + ctx.headers.host + '/miniprogramqrcode.png';    
+  let fileUrl = 'https://' + ctx.headers.host + '/miniprogramqrcode.png';    
   ctx.response.body = successWrapper(fileUrl);
 }
 

@@ -58,6 +58,7 @@ export const login = async (ctx, next) => {
 export const getMiniProgramQrcode = async (ctx, next) => {
   let { AppId, AppSecret } = config;
   let access_token = '';
+  // 获取access_token
   var options = {
     method: 'GET',
     uri: `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${AppId}&secret=${AppSecret}`,
@@ -67,12 +68,12 @@ export const getMiniProgramQrcode = async (ctx, next) => {
   let result = await request(options);
   let tokens = await Token.find();
   let currentToken = tokens[0];
-  // if(currentToken && (date.getTime()-currentToken.save_time)/1000 < currentToken.expires_in) {
-  //   access_token = currentToken.access_token;
-  // } else {
-      if(currentToken) {
-        await Token.remove({})
-      }
+  if(currentToken && (date.getTime()-currentToken.save_time)/1000 < currentToken.expires_in) {
+    access_token = currentToken.access_token;
+  } else {
+    if(currentToken) {
+      await Token.remove({})
+    }
     let token = new Token({...result, save_time: date.getTime()});
     await token.save();
     access_token = result.access_token;
@@ -81,15 +82,15 @@ export const getMiniProgramQrcode = async (ctx, next) => {
       uri: `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=${result.access_token}`,
       json: true,
       body: {
-        scene: 'aa',
-        page: 'pages/index/index'
+        scene: 'test',
+        page: 'pages/home/index'
       }
     }
-    let result1 = await request(options1).pipe(fs.createWriteStream('./public/MiniProgramQrcode.png')
-  );
-  let fileUrl = '//' + ctx.headers.host.split(":")[0] + ':8080/' + 'MiniProgramQrcode.png';
-    
-  ctx.response.body = successWrapper(fileUrl);
+    let result1 = await request(options1).pipe(fs.createWriteStream('/usr/etc/miniprogramqrcode.png'));
+
+    let fileUrl = '//' + ctx.headers.host + 'miniprogramqrcode.png';    
+    ctx.response.body = successWrapper(fileUrl);
+  }
 }
 
 export const getList = async (ctx, next) => {

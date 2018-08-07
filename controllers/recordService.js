@@ -56,6 +56,7 @@ export const login = async (ctx, next) => {
 }
 
 export const getMiniProgramQrcode = async (ctx, next) => {
+  console.log('我进来了')
   let { AppId, AppSecret } = config;
   let access_token = '';
   // 获取access_token
@@ -66,7 +67,7 @@ export const getMiniProgramQrcode = async (ctx, next) => {
   };
   let date = new Date();
   let result = await request(options);
-  let tokens = await Token.find();
+  let tokens = await Token.find({});
   let currentToken = tokens[0];
   if(currentToken && (date.getTime()-currentToken.save_time)/1000 < currentToken.expires_in) {
     access_token = currentToken.access_token;
@@ -88,9 +89,9 @@ export const getMiniProgramQrcode = async (ctx, next) => {
     }
     let result1 = await request(options1).pipe(fs.createWriteStream('/usr/etc/miniprogramqrcode.png'));
 
-    let fileUrl = '//' + ctx.headers.host + 'miniprogramqrcode.png';    
-    ctx.response.body = successWrapper(fileUrl);
   }
+  let fileUrl = '//' + ctx.headers.host + '/miniprogramqrcode.png';    
+  ctx.response.body = successWrapper(fileUrl);
 }
 
 export const getList = async (ctx, next) => {

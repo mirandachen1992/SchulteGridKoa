@@ -1,8 +1,16 @@
 import Router from 'koa-router';
 
-import { saveRecord, login, getRecord, getList, getMiniProgramQrcode } from '../controllers/recordService';
+import {
+  saveRecord,
+  login,
+  getRecord,
+  getList,
+  getMiniProgramQrcode
+} from '../controllers/recordService';
 import validate from 'koa2-validation';
 import Joi from 'joi';
+import msgRoute from '../routers/msg';
+
 var router = new Router();
 
 const saveV = {
@@ -10,8 +18,8 @@ const saveV = {
     openId: Joi.required(),
     nickName: Joi.string().required(),
     avatarUrl: Joi.string(),
-    record:Joi.number().required(),
-    type:Joi.required()
+    record: Joi.number().required(),
+    type: Joi.required()
   }
 }
 
@@ -31,6 +39,8 @@ router.get('/type/:type/getList', getList);
 
 router.get('/getMiniProgramQrcode', getMiniProgramQrcode);
 
+
+msgRoute(router);
 
 
 export default router;

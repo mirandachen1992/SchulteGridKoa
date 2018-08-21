@@ -1,2 +1,6 @@
 node_modules/
 appConfig.json
+.history
+.vscode
+jsconfig.json
+typings/wx.d.ts

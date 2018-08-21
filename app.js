@@ -5,14 +5,19 @@ import bodyParser from 'koa-body-parser';
 import router from './routers/router.js';
 
 import serverConfig from './utils/server.js';
-import { errorWrapper, successWrapper } from './utils/utils.js';
+import {
+  errorWrapper,
+  successWrapper
+} from './utils/utils.js';
 
 
-mongoose.connect(serverConfig.DB_CONN_STR);
+mongoose.connect(serverConfig.DB_CONN_STR, {
+  useNewUrlParser: true
+});
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', function () {
   console.log('连接成功');
 })
 
@@ -28,7 +33,7 @@ const errorHandler = async (ctx, next) => {
 };
 
 app.use(require('koa-static')(__dirname + '/public'))
-app.use(errorHandler); 
+app.use(errorHandler);
 app.use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods());

@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "set NODE_ENV=develop && nodemon --exec babel-node --inspect app.js",
-    "production": "NODE_ENV=production forever start -c babel-node app.js"
+    "production": "NODE_ENV=production forever start --id 'SchulteGrid-Koa' -c babel-node app.js"
   },
   "keywords": [
     "koa",

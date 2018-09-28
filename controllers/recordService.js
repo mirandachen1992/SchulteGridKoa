@@ -140,7 +140,7 @@ export const getList = async (ctx, next) => {
         $gt: 0
       }
     }).limit(100).sort({
-      [`record_type${type}`]: 1
+      [`record_type${type}`]: 0
     }).lean()
     .then(
       (docs) => {

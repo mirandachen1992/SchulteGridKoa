@@ -160,5 +160,5 @@ export const getList = async (ctx, next) => {
         })
       }
     )
-  ctx.response.body = successWrapper([]);
+  ctx.response.body = successWrapper(res);
 }

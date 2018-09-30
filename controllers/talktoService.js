@@ -80,11 +80,9 @@ export const querySMS = async (ctx, next) => {
   ctx.set('Cache-Control', 'no-cache');
   let request = ctx.request.body;
   let {
-    openId,
     code
   } = request;
   let res = await SMSModel.find({
-    openId,
     code
   });
   // 无结果

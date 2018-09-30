@@ -6,6 +6,7 @@ import SMSModel from '../models/sms';
 import config from '../talktoConfig.json';
 import path from 'path';
 import moment from 'moment';
+import smsSend from '../utils/smsSend';
 const request = require('request-promise');
 const fs = require('fs');
 
@@ -57,13 +58,44 @@ export const createSMS = async (ctx, next) => {
     ctx.response.body = errorWrapper(`每天只能发送${limitSMS}条哦`);
   } else {
     let recordData = new SMSModel(postData);
+
+    let resCode = await smsSend(postData.code, postData.tel);
+
+    if (resCode != 'OK') {
+      console.log('sms fail:' + resCode);
+      ctx.response.body = errorWrapper(`短信发送失败`);
+      return false;
+    }
+
     let result = await recordData.save().then(data => {
-      return '保存成功'
+      return '发送成功'
     })
     ctx.response.body = successWrapper(result);
   }
 
 }
+
+
+export const querySMS = async (ctx, next) => {
+  ctx.set('Cache-Control', 'no-cache');
+  let request = ctx.request.body;
+  let {
+    openId,
+    code
+  } = request;
+  let res = await SMSModel.find({
+    openId,
+    code
+  });
+  // 无结果
+  if (res.length <= 0) {
+    ctx.response.body = errorWrapper(`没有查到结果哦`);
+  } else {
+    ctx.response.body = successWrapper(res);
+  }
+}
+
+
 
 
 // 生成验证码

@@ -14,6 +14,7 @@
   "author": "chenyongjin",
   "license": "ISC",
   "dependencies": {
+    "@alicloud/sms-sdk": "^1.1.4",
     "babel-preset-stage-3": "^6.24.1",
     "joi": "^13.4.0",
     "koa": "2.0.0",

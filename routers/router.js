@@ -11,6 +11,7 @@ import validate from 'koa2-validation';
 import Joi from 'joi';
 import msgRoute from '../routers/msg';
 import talktoRoute from '../routers/talkto';
+import helpmiss from '../routers/helpmiss';
 
 var router = new Router();
 
@@ -44,6 +45,7 @@ router.get('/getMiniProgramQrcode', getMiniProgramQrcode);
 
 msgRoute(router);
 talktoRoute(router);
+helpmiss(router);
 
 
 export default router;

@@ -1,0 +1,1 @@
+lsof -i:8080 | awk '{print $2}' | sed -n '2,$p' | xargs kill -9

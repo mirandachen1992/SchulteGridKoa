@@ -9,7 +9,6 @@ import {
 } from '../controllers/helpmissService';
 import uploadFile from '../utils/uploadFile';
 
-const multiparty = require('koa2-multiparty');
 
 const talktoRoute = (router) => {
 

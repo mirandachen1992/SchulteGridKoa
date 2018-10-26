@@ -43,6 +43,14 @@ var HelpSchema = new Schema({
     type: String,
     required: true
   },
+  helpType: {
+    type: String,
+    required: true
+  },
+  picUrls: {
+    type: Array,
+    required: true
+  },
 })
 
 

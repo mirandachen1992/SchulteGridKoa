@@ -1,4 +1,8 @@
 {
   "AppId": "wxd5f221a504c0dd6b",
-  "AppSecret": "753a463ba07d418459673df735aefe01"
+  "AppSecret": "753a463ba07d418459673df735aefe01",
+  "helpType": {
+    "0": "寻人",
+    "1": "寻宠物"
+  }
 }

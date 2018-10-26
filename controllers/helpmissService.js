@@ -4,6 +4,9 @@ import {
 } from '../utils/utils.js';
 import HelpModel from '../models/help.js';
 import config from '../helpmissConfig.json';
+import uploadFile from '../utils/uploadFile';
+
+
 const request = require('request-promise');
 const fs = require('fs');
 
@@ -29,7 +32,7 @@ export const login = async (ctx, next) => {
 export const createHelp = async (ctx, next) => {
   ctx.set('Cache-Control', 'no-cache');
   let request = ctx.request.body;
-  let postDataKeys = ["openId", "createTime", "missTime", "missName", "missSex", "missAddress", "missAddressText", "missDetailText", "contactName", "contactTel"];
+  let postDataKeys = ["openId", "createTime", "missTime", "missName", "missSex", "missAddress", "missAddressText", "missDetailText", "contactName", "contactTel","picUrls","helpType"];
   let postData = postDataKeys.reduce((data, ikey) => (data[ikey] = request[ikey], data), {});
   postData.createTime = new Date().getTime();
   let recordData = new HelpModel(postData);
@@ -56,4 +59,27 @@ export const queryHelpList = async (ctx, next) => {
   } else {
     ctx.response.body = successWrapper(res);
   }
+}
+
+export const queryHelpType = async (ctx, next) => {
+  ctx.set('Cache-Control', 'no-cache');
+  let {
+    helpType
+  } = config;
+  let res = Object.keys(helpType).reduce((arry, key) => {
+    arry.push({
+      text: helpType[key],
+      value: key
+    })
+    return arry;
+  }, []);
+  ctx.response.body = successWrapper(res);
+}
+
+export const upload = async (ctx, next) => {
+  ctx.set('Cache-Control', 'no-cache');
+  console.log(ctx.response.req);
+  let path = 'https://sg.eldesign.cn/files/helpmiss/';
+  let filename = ctx.req.file.filename;
+  ctx.response.body = successWrapper(path + filename);
 }

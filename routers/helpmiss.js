@@ -3,8 +3,13 @@ import Joi from 'joi';
 import {
     login,
     createHelp,
-    queryHelpList
+    queryHelpList,
+    queryHelpType,
+    upload
 } from '../controllers/helpmissService';
+import uploadFile from '../utils/uploadFile';
+
+const multiparty = require('koa2-multiparty');
 
 const talktoRoute = (router) => {
 
@@ -22,6 +27,12 @@ const talktoRoute = (router) => {
     router.post('/helpmiss/queryHelpList', validate({
         counts: Joi.required()
     }), queryHelpList);
+
+    router.get('/helpmiss/queryHelpType', queryHelpType);
+
+
+    //路由
+    router.post('/helpmiss/upload', uploadFile('helpmiss').single('file'), upload)
 
 }
 

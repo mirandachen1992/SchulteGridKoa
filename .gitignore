@@ -4,3 +4,4 @@ appConfig.json
 .vscode
 jsconfig.json
 typings/wx.d.ts
+public/files/

@@ -32,7 +32,7 @@ export const login = async (ctx, next) => {
 export const createHelp = async (ctx, next) => {
   ctx.set('Cache-Control', 'no-cache');
   let request = ctx.request.body;
-  let postDataKeys = ["openId", "createTime", "missTime", "missName", "missSex", "missAddress", "missAddressText", "missDetailText", "contactName", "contactTel","picUrls","helpType"];
+  let postDataKeys = ["openId", "createTime", "missTime", "missName", "missSex", "missAddress", "missAddressText", "missDetailText", "contactName", "contactTel", "picUrls", "helpType"];
   let postData = postDataKeys.reduce((data, ikey) => (data[ikey] = request[ikey], data), {});
   postData.createTime = new Date().getTime();
   let recordData = new HelpModel(postData);
@@ -46,11 +46,11 @@ export const queryHelpList = async (ctx, next) => {
   ctx.set('Cache-Control', 'no-cache');
   let request = ctx.request.body;
   let {
-    openid,
+    openId,
     counts
   } = request;
-  let queryStr = openid ? {
-    openid,
+  let queryStr = openId ? {
+    openId,
   } : {};
   let res = await HelpModel.find(queryStr).limit(counts * 1);
   // 无结果

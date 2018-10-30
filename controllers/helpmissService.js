@@ -52,7 +52,9 @@ export const queryHelpList = async (ctx, next) => {
   let queryStr = openId ? {
     openId,
   } : {};
-  let res = await HelpModel.find(queryStr).limit(counts * 1);
+  let res = await HelpModel.find(queryStr).sort({
+    createTime: -1
+  }).limit(counts * 1);
   // 无结果
   if (res.length <= 0) {
     ctx.response.body = errorWrapper(`没有查到结果哦`);
